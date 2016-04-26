@@ -11,7 +11,7 @@
  
    <init-param>
      <param-name>jersey.config.server.provider.packages</param-name>
-     <param-value>services</param-value>
+     <param-value>main.java.services</param-value>
    </init-param> 
  </servlet>
  

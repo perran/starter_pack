@@ -1,4 +1,4 @@
-package services;
+package main.java.services;
 
 public class User {
 
