@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#ajax").click(function(){
+		$.ajax({
+			url:"http://localhost:8080/jersey_shore/rest/user/create/",
+			type:"POST",
+			data:'{"name": "Donald Duck","age": 10,"town": "Duckburg"}',
+			contentType:"application/json; charset=utf-8",
+			dataType:"json",
+			success: function(data, status, jqXhr){
+				console.log("Data: " + data + "\nStatus: " + status);
+			}
+		});
+    });
+});
+</script>
+</head>
+<body>
+
+<button id="ajax">$ajax</button>
+
+</body>
+</html>

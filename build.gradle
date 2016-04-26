@@ -1,0 +1,23 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+repositories {
+ mavenCentral()
+}
+ 
+dependencies {
+	//for cors stuff
+	compile 'org.eclipse.jetty:jetty-servlets:9.3.9.M1'
+	
+	//for rest annotations
+	compile 'javax.ws.rs:javax.ws.rs-api:2.0.1'
+	
+  	compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.2'
+	
+	//for handling json consume/produce
+	compile 'org.glassfish.jersey.media:jersey-media-moxy:2.22.2'
+	 	
+	// testCompile 'junit:junit:4.11'
+	// testCompile 'org.hamcrest:hamcrest-all:1.3'
+}
