@@ -23,8 +23,11 @@ dependencies {
 	compile 'org.hibernate.ogm:hibernate-ogm-bom:5.0.0.CR1'
 	compile 'org.hibernate.ogm:hibernate-ogm-infinispan:5.0.0.CR1'
 	compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Draft-16'
+	//mongodb
+	compile 'org.jboss.jbossts:jbossjta:4.16.6.Final'
+	compile 'org.hibernate.ogm:hibernate-ogm-mongodb:5.0.0.Final'
 	 	
-	// testCompile 'junit:junit:4.11'
+	 testCompile 'junit:junit:+'
 	// testCompile 'org.hamcrest:hamcrest-all:1.3'
 }
 
