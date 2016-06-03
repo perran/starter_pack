@@ -1,10 +1,12 @@
 package services.database.dto;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
+@Entity
 public class DBUser {
 	
 	@Id
@@ -14,7 +16,11 @@ public class DBUser {
 	
 	private String firstName;
     private String lastName;
-        
+    
+	public DBUser() {
+		super();
+	}
+
 	public DBUser(String firstName, String lastName) {
 		super();
 		this.firstName = firstName;

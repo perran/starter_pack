@@ -35,13 +35,15 @@ public class UserDBTest {
 		
 		entityManager.persist(dbUser);
 		
+		entityManager.getTransaction().commit();
+		
 		entityManager.close();
 		
 		//now read from db
 		
 		entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
-		
+
 		DBUser find = entityManager.find( DBUser.class, dbUser.getId() );
 		
 		Assert.assertThat(find.getFirstName(), org.hamcrest.CoreMatchers.is("Data"));

@@ -36,9 +36,9 @@ sourceSets {
         java {
             srcDir 'src/main/java'
         }
-        //resources {
-        //    srcDir 'src/resources'
-        //}
+        resources {
+            srcDir 'src/main/webapp'
+        }
     }
     test {
     	java {
