@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#checkName").click(function(){
+		
+		let username = $("#username").val();
+		let finalUrl = "http://localhost:8080/starter_pack/rest/login/checkname/" + username;
+	
+        $.get(
+			finalUrl,
+			null,
+			function(data,status, jqXHR){
+				alert("Data: " + data + "\nStatus: " + status);
+			}, 
+			"json"
+		);
+    });
+});
+
+$(document).ready(function(){
+    $("#create").click(function(){
+		postUsernameAndPasswordToEndpoint("create");
+    });
+});
+
+$(document).ready(function(){
+    $("#login").click(function(){
+		postUsernameAndPasswordToEndpoint("login");
+    });
+});
+
+function postUsernameAndPasswordToEndpoint(endpoint){
+	let username = $("#username").val();
+	let password = $("#password").val();
+	let jsonData = '{"username": "' + username + '","password": "' + password + '"}';
+
+	$.ajax({
+		url:"http://localhost:8080/starter_pack/rest/login/" + endpoint,
+		type:"POST",
+		data:jsonData,
+		contentType:"application/json; charset=utf-8",
+		dataType:"json",
+		success: function(data, status, jqXhr){
+			console.log("Data: " + data + "\nStatus: " + status);
+		}
+	});
+}
+</script>
+</head>
+<body>
+
+
+<input id="username" type="text" placeholder="e-mail">
+<input id="password" type="password" placeholder="password">
+<button id="checkName">Check name</button>
+<button id="create">Create</button>
+<button id="login">Login</button>
+
+</body>
+</html>

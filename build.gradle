@@ -28,6 +28,7 @@ dependencies {
 	compile 'org.hibernate.ogm:hibernate-ogm-mongodb:5.0.0.Final'
 	 	
 	 testCompile 'junit:junit:+'
+	 testCompile 'org.mockito:mockito-core:+'
 	// testCompile 'org.hamcrest:hamcrest-all:1.3'
 }
 

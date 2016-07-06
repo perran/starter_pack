@@ -1,15 +1,20 @@
 package services;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import services.database.dto.DBUser;
+import services.database.dto.DBLoginCredentials;
 
 public class UserDBTest {
 
@@ -24,30 +29,59 @@ public class UserDBTest {
     public static void closeEntityManagerFactory() {
         entityManagerFactory.close();
     }
-	
+
+    public <T> void clearDb(Class<T> clazz){
+    	EntityManager entityManager = entityManagerFactory.createEntityManager();
+    	entityManager.getTransaction().begin();
+
+    	Query query = entityManager.createQuery( "SELECT h FROM DBLoginCredentials h" , clazz);
+
+    	List<T> resultList = query.getResultList();
+		
+		for (T lc : resultList) {
+			entityManager.remove(lc);
+		}
+		
+		entityManager.getTransaction().commit();
+		entityManager.close();
+    }
+    
 	@Test
-	public void testUserDB(){
+	public void testUserDB2(){
+		clearDb(DBLoginCredentials.class);
+		
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		
 		entityManager.getTransaction().begin();
-			
-		DBUser dbUser = new DBUser("Data", "Pata");
 		
-		entityManager.persist(dbUser);
+		String salt = "salt";
+		String password = "password";
+		
+		String username = "Perka";
+		
+		DBLoginCredentials dbLoginCredentials = new DBLoginCredentials(username, salt, password);
+		
+		entityManager.persist(dbLoginCredentials);
 		
 		entityManager.getTransaction().commit();
 		
 		entityManager.close();
 		
-		//now read from db
-		
 		entityManager = entityManagerFactory.createEntityManager();
 		entityManager.getTransaction().begin();
-
-		DBUser find = entityManager.find( DBUser.class, dbUser.getId() );
 		
-		Assert.assertThat(find.getFirstName(), org.hamcrest.CoreMatchers.is("Data"));
+		//now query by the name
 		
+		Query query = entityManager.createQuery("select n from DBLoginCredentials n where username = '" + username + "'");
+		List<DBLoginCredentials> resultList = query.getResultList();
+		
+		
+		assertThat(resultList.size(), equalTo(1));
+		
+		DBLoginCredentials actual = resultList.get(0);
+		assertThat(actual.getUsername(), equalTo(username));
+		
+		entityManager.getTransaction().commit();
 		entityManager.close();
 	}
 	
