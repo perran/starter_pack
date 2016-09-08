@@ -1,9 +1,10 @@
 package services.login;
 
+import java.util.Arrays;
 import java.util.Base64;
 
-import utils.Hasher;
 import utils.SecureRandomWrapper;
+import utils.hashing.Hasher;
 
 public class PasswordHelper {
 
@@ -30,6 +31,6 @@ public class PasswordHelper {
 		byte[] decodedSalt = Base64.getDecoder().decode(salt);
 		byte[] hash = hasher.hash(password, decodedSalt);
 		byte[] decodedExistingHash = Base64.getDecoder().decode(existingHash);
-		return hasher.isEqual(hash, decodedExistingHash);
+		return Arrays.equals(hash, decodedExistingHash);
 	}
 }

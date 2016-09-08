@@ -1,18 +1,19 @@
-package utils;
+package utils.hashing;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-public class Hasher {
+import utils.PBEKeySpecFactory;
+
+public class PBKDF2Hasher implements Hasher {
 	
 	private PBEKeySpecFactory pbeKeySpecFactory;
 	private SecretKeyFactory secretKeyFactory;
 	
-	public Hasher(PBEKeySpecFactory pbeKeySpecFactory) {
+	public PBKDF2Hasher(PBEKeySpecFactory pbeKeySpecFactory) {
 		this.pbeKeySpecFactory = pbeKeySpecFactory;
 		
 		try {
@@ -22,6 +23,7 @@ public class Hasher {
 		}
 	}
 	
+	@Override
 	public byte[] hash(String toHash, byte[] salt){
 		int iterationCount = 100000;
 		int keyLength = 128*8;
@@ -33,9 +35,5 @@ public class Hasher {
 		}
 		
 		return null;
-	}
-	
-	public boolean isEqual(byte[] digesta, byte[] digestb){
-		return MessageDigest.isEqual(digesta, digestb);
 	}
 }

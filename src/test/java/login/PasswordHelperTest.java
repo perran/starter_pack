@@ -14,9 +14,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import services.login.PasswordHelper;
 import services.login.SaltAndHash;
-import utils.Hasher;
 import utils.PBEKeySpecFactory;
 import utils.SecureRandomWrapper;
+import utils.hashing.Hasher;
+import utils.hashing.PBKDF2Hasher;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PasswordHelperTest {
@@ -30,7 +31,7 @@ public class PasswordHelperTest {
 		
 		Mockito.when(secureRandomWrapper.nextBytes(64)).thenReturn(expectedSalt);
 		PBEKeySpecFactory pbeKeySpecFactory = new PBEKeySpecFactory();
-		Hasher hasher = new Hasher(pbeKeySpecFactory);
+		Hasher hasher = new PBKDF2Hasher(pbeKeySpecFactory);
 		PasswordHelper passwordHelper = new PasswordHelper(secureRandomWrapper, hasher);
 		SaltAndHash saltAndHash = passwordHelper.saltAndHash("password");
 		
