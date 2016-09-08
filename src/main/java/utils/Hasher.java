@@ -1,25 +1,34 @@
 package utils;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 public class Hasher {
-
-	private MessageDigest digest;
 	
-	public Hasher() {
+	private PBEKeySpecFactory pbeKeySpecFactory;
+	private SecretKeyFactory secretKeyFactory;
+	
+	public Hasher(PBEKeySpecFactory pbeKeySpecFactory) {
+		this.pbeKeySpecFactory = pbeKeySpecFactory;
+		
 		try {
-			this.digest = MessageDigest.getInstance("SHA-256");
+			this.secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 		}catch(NoSuchAlgorithmException e){
 			e.printStackTrace();;
 		}
 	}
 	
-	public byte[] hash(String toHash){
+	public byte[] hash(String toHash, byte[] salt){
+		int iterationCount = 100000;
+		int keyLength = 128*8;
+		PBEKeySpec spec = pbeKeySpecFactory.create(toHash.toCharArray(), salt, iterationCount , keyLength);
 		try {
-			return digest.digest(toHash.getBytes("UTF-8"));
-		} catch (UnsupportedEncodingException e) {
+			return secretKeyFactory.generateSecret(spec).getEncoded();
+		} catch (InvalidKeySpecException e) {
 			e.printStackTrace();
 		}
 		
