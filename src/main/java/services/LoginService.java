@@ -18,6 +18,7 @@ import services.login.LoginDbInteractor;
 import services.login.LoginTicket;
 import services.login.PasswordHelper;
 import services.login.SaltAndHash;
+import utils.DbTransactionHelper;
 import utils.PBEKeySpecFactory;
 import utils.SecureRandomWrapper;
 import utils.hashing.Hasher;
@@ -35,7 +36,8 @@ public class LoginService {
 		Hasher hasher = new PBKDF2Hasher(pbeKeySpecFactory);
 		passwordHelper = new PasswordHelper(randomizer, hasher);
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory( "UserPersistanceUnit" ); //do something about the UserPersistanceUnit name so it is dynamic?
-		loginDbInteractor = new LoginDbInteractor(entityManagerFactory);
+		DbTransactionHelper dbTransactionHelper = new DbTransactionHelper(entityManagerFactory);
+		loginDbInteractor = new LoginDbInteractor(dbTransactionHelper);
 	}
 	
 	@GET

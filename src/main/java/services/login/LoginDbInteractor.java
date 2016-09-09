@@ -7,47 +7,36 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import services.database.dto.DBLoginCredentials;
+import utils.DbTransactionHelper;
 
 public class LoginDbInteractor {
 
-	private EntityManagerFactory entityManagerFactory;
-	
-	public LoginDbInteractor(EntityManagerFactory entityManagerFactory) {
-		super();
-		this.entityManagerFactory = entityManagerFactory;
-	}
+	private DbTransactionHelper dbTransactionHelper;
 
-	private EntityManager pre(){
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		entityManager.getTransaction().begin();
+	public LoginDbInteractor(DbTransactionHelper dbTransactionHelper) {
+		super();
+		this.dbTransactionHelper = dbTransactionHelper;
+	}
 		
-		return entityManager;
-	}
-	
-	private void post(EntityManager entityManager){
-		entityManager.getTransaction().commit();
-		entityManager.close();
-	}
-	
 	public void add(DBLoginCredentials credentials) throws Exception{
-		EntityManager entityManager = pre();
+		EntityManager entityManager = dbTransactionHelper.beginTransaction();
 		
 		String username = credentials.getUsername();
 		DBLoginCredentials existing = getInternal(entityManager, username);
 		
 		if(existing != null){
-			post(entityManager);
+			dbTransactionHelper.endTransaction(entityManager);
 			throw new Exception("There is already a user with the name " + username);
 		}
 		
 		entityManager.persist(credentials);
-		post(entityManager);
+		dbTransactionHelper.endTransaction(entityManager);
 	}
 	
 	public DBLoginCredentials get(String username){
-		EntityManager entityManager = pre();
+		EntityManager entityManager = dbTransactionHelper.beginTransaction();
 		DBLoginCredentials lc = getInternal(entityManager, username);
-		post(entityManager);
+		dbTransactionHelper.endTransaction(entityManager);
 		
 		return lc;
 	}
